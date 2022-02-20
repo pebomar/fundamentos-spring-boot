@@ -64,7 +64,7 @@ public class FundamentosApplication implements CommandLineRunner {
 	}
 
 	private void getInformationJpqlFromUser(){
-		log.info("El usuario con el metodo findByUserEmail ["+
+		/*log.info("El usuario con el metodo findByUserEmail ["+
 				userRepository.findByUserEmail("jhon@mail.com")
 						.orElseThrow(() -> new RuntimeException("No se encontro el usuario"))+"]");
 
@@ -77,6 +77,22 @@ public class FundamentosApplication implements CommandLineRunner {
 
 		log.info("Usuario con query method findByEmailAndName"+userRepository.findByEmailAndName("usuario2@mail.com", "Usuario2")
 				.orElseThrow(() -> new RuntimeException("Usuario no encontrado")));
+
+		userRepository.findByNameLike("%suario%")
+				.forEach(user -> log.info("Usuario con query method findByNameLike ["+user+"]"));
+
+		userRepository.findByNameOrEmail(null, "usuario2@mail.com")
+				.forEach(user -> log.info("Usuario con query method findByNameOrEmail ["+user+"]"));
+
+
+		userRepository.findByBirthDateBetween(LocalDate.of(2020, 01, 01),
+				LocalDate.of(2021, 12, 31))
+				.forEach(user -> log.info("Usuario con query method findByBirthDateBetween ["+user+"]"));
+		*/
+
+		userRepository.findByNameLikeOrderByIdDesc("%suario%")
+				.forEach(user -> log.info("Consulta con query method findByNameLikeOrderByIdDesc "+user));
+
 	}
 
 	private void saveUsersInDatabase(){
