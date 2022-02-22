@@ -93,6 +93,12 @@ public class FundamentosApplication implements CommandLineRunner {
 		userRepository.findByNameLikeOrderByIdDesc("%suario%")
 				.forEach(user -> log.info("Consulta con query method findByNameLikeOrderByIdDesc "+user));
 
+		log.info("El usuario es: "+
+				userRepository.getAllByBirthDateAndEmail(LocalDate.of(2021, 3, 20),
+								"jhon@mail.com")
+				.orElseThrow(() -> new RuntimeException("El registro no fue encontrado a partir" +
+						"de la fecha de nacimiento y correo")));
+
 	}
 
 	private void saveUsersInDatabase(){
