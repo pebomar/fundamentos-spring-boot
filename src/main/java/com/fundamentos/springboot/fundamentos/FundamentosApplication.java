@@ -5,6 +5,7 @@ import com.fundamentos.springboot.fundamentos.component.ComponentDependency;
 import com.fundamentos.springboot.fundamentos.entity.User;
 import com.fundamentos.springboot.fundamentos.pojo.UserPojo;
 import com.fundamentos.springboot.fundamentos.repository.UserRepository;
+import com.fundamentos.springboot.fundamentos.service.UserService;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,6 +42,9 @@ public class FundamentosApplication implements CommandLineRunner {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private UserService userService;
+
 	public FundamentosApplication(@Qualifier("componentTwoImplement") ComponentDependency componentDependency, MyBean myBean, MyBeanWithDependency myBeanWithDependency) {
 		this.componentDependency = componentDependency;
 		this.myBean = myBean;
@@ -59,8 +64,23 @@ public class FundamentosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args)  {
-		saveUsersInDatabase();
-		getInformationJpqlFromUser();
+		//saveUsersInDatabase();
+		//getInformationJpqlFromUser();
+
+		saveWhitErrorTransactional();
+	}
+
+	private void saveWhitErrorTransactional(){
+		User test1 = new User("TestTransactional1", "TestTransactional1@mail.com", LocalDate.now());
+		User test2 = new User("TestTransactional2", "TestTransactional2@mail.com", LocalDate.now());
+		User test3 = new User("TestTransactional3", "TestTransactional3@mail.com", LocalDate.now());
+		User test4 = new User("TestTransactional4", "TestTransactional4@mail.com", LocalDate.now());
+
+		List<User> users = Arrays.asList(test1, test2, test3, test4);
+
+		userService.saveTransactional(users);
+
+		userService.getAllUsers().forEach(user -> log.info("Encontré el usuario "+user));
 	}
 
 	private void getInformationJpqlFromUser(){
