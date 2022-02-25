@@ -64,7 +64,7 @@ public class FundamentosApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args)  {
-		//saveUsersInDatabase();
+		saveUsersInDatabase();
 		//getInformationJpqlFromUser();
 
 		saveWhitErrorTransactional();
@@ -73,14 +73,18 @@ public class FundamentosApplication implements CommandLineRunner {
 	private void saveWhitErrorTransactional(){
 		User test1 = new User("TestTransactional1", "TestTransactional1@mail.com", LocalDate.now());
 		User test2 = new User("TestTransactional2", "TestTransactional2@mail.com", LocalDate.now());
-		User test3 = new User("TestTransactional3", "TestTransactional3@mail.com", LocalDate.now());
+		User test3 = new User("TestTransactional3", "TestTransactional1@mail.com", LocalDate.now());
 		User test4 = new User("TestTransactional4", "TestTransactional4@mail.com", LocalDate.now());
 
 		List<User> users = Arrays.asList(test1, test2, test3, test4);
 
-		userService.saveTransactional(users);
+		try {
+			userService.saveTransactional(users);
+		}catch(Exception e){
+			log.error("Esta es una exception dentro del metodo transaccional "+e);
+		}
 
-		userService.getAllUsers().forEach(user -> log.info("Encontré el usuario "+user));
+		userService.getAllUsers().stream().forEach(user -> log.info("Encontré el usuario "+user));
 	}
 
 	private void getInformationJpqlFromUser(){
