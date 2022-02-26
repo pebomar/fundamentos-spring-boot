@@ -67,7 +67,7 @@ public class FundamentosApplication implements CommandLineRunner {
 		saveUsersInDatabase();
 		//getInformationJpqlFromUser();
 
-		saveWhitErrorTransactional();
+		//saveWhitErrorTransactional();
 	}
 
 	private void saveWhitErrorTransactional(){
